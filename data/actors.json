@@ -83,6 +83,18 @@
       "bystander": { "panicDefault": "도주" },
       "appearance": { "sprite": "server", "color": "#cfcfcf" },
       "_note": "쟁반 들고 통로를 오감 — 동선 변수"
+    },
+    "sabeom": {
+      "name": "사범", "faction": "enemy", "tier": "정예",
+      "level": 5,
+      "resources": { "base": { "hp": 70, "qi": 50 }, "perLevel": { "hp": 16, "qi": 12 } },
+      "masteryProfile": { "base": 3, "perLevel": 1, "actions": { "베기": 1, "발차기": 1 } },
+      "loadout": [ { "tech": "용호권", "단계": 2 } ],
+      "weapon": "mokgeom",
+      "move": { "gyeonggong": "보법", "speed": 1.0 },
+      "ai": "stateMachine:sabeom",
+      "appearance": { "sprite": "sabeom", "color": "#5a7a9a" },
+      "_note": "연무장 사범. 평소 지켜보다 간헐적으로 목검을 씀 (scenario의 engageDelay/Interval로 제어)"
     }
   }
 }

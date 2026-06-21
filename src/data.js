@@ -9,8 +9,8 @@ async function fetchJSON(name) {
   return res.json();
 }
 
-const PLACE_FILES = ["place_chwiseonru_2f", "place_golmok"];
-const SCENARIO_FILES = ["scenario_chwiseonru_drill", "scenario_golmok"];
+const PLACE_FILES = ["place_yeonmujang", "place_chwiseonru_2f", "place_golmok"];
+const SCENARIO_FILES = ["scenario_yeonmujang", "scenario_chwiseonru_drill", "scenario_golmok"];
 
 // 공유 라이브러리 + 모든 장소/시나리오를 로드. place/scenario는 선택 시 채워짐.
 export async function loadGameData() {

@@ -1,0 +1,28 @@
+{
+  "_note": "연무장 — 재사용 가능한 장소(Place). 기획문서 §5.5. 좌표 = 중심 원점 직교(px, +x=우, +y=앞). 첫 수련 장소: 네 기둥이 사방을 받친 정갈한 수련의 장.",
+  "place": {
+    "id": "yeonmujang",
+    "name": "연무장",
+    "region": "본문파",
+    "archetype": "연무장",
+    "mood": "정갈한 수련의 장",
+    "description": "문파의 연무장. 네 개의 기둥이 사방을 받치고, 가운데 너른 마룻바닥에서 사범이 제자를 지켜본다."
+  },
+  "stage": {
+    "shape": "rect",
+    "bounds": { "halfWidth": 280, "halfHeight": 200, "_note": "너른 정사각 수련장. x∈[-280,280], y∈[-200,200]" },
+    "size": { "approachTime": 1.6, "_note": "탁 트인 공간 — 정식 초식을 칠 여유" },
+    "anchor": { "x": 0, "y": 0 },
+    "obstacles": [
+      { "id": "pillar_ne", "kind": "기둥", "pos": { "x": 170,  "y": 110 },  "size": 46, "blocks": { "projectile": true, "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "pillar_nw", "kind": "기둥", "pos": { "x": -170, "y": 110 },  "size": 46, "blocks": { "projectile": true, "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "pillar_se", "kind": "기둥", "pos": { "x": 170,  "y": -110 }, "size": 46, "blocks": { "projectile": true, "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "pillar_sw", "kind": "기둥", "pos": { "x": -170, "y": -110 }, "size": 46, "blocks": { "projectile": true, "movement": true, "sight": "partial" }, "destructible": false }
+    ],
+    "terrain": [],
+    "exits": [
+      { "id": "gate", "type": "입구", "pos": { "x": 0, "y": -200 }, "_note": "연무장 입구" }
+    ],
+    "lighting": { "sight": 1.0, "_note": "환한 대낮 — 시야 정상" }
+  }
+}

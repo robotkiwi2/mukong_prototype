@@ -41,6 +41,7 @@ export class ArenaGame {
         const st = actionStats(ent, bh.attack, this.game);
         e.atkPower = st.power; e.reach = st.range + PLAYER_R + e.r;
         e.state = "circle"; e.windup = 0; e.holdT = 0; e.recoverT = 0; e.orbitDir = Math.random() < 0.5 ? 1 : -1;
+        e.engageT = bh.engageDelay ?? 0; e.engageInterval = bh.engageInterval ?? 0; e.engageJitter = bh.engageJitter ?? 0;
       } else {
         const st = actionStats(ent, bh.fire, this.game);
         e.projSpeed = st.projectileSpeed; e.projPower = st.power;
@@ -94,7 +95,7 @@ export class ArenaGame {
     let slots = this.maxAggro - this.enemies.filter(e => e.kind === "melee" && busy(e)).length;
     if (slots <= 0) return;
     const p = this.player.pos;
-    const cand = this.enemies.filter(e => e.kind === "melee" && e.state === "circle" && e.retreatT <= 0)
+    const cand = this.enemies.filter(e => e.kind === "melee" && e.state === "circle" && e.retreatT <= 0 && (e.engageT ?? 0) <= 0)
       .sort((a, b) => Math.hypot(a.pos.x - p.x, a.pos.y - p.y) - Math.hypot(b.pos.x - p.x, b.pos.y - p.y));
     for (const e of cand) { if (slots <= 0) break; e.state = "advance"; slots--; }
   }
@@ -157,6 +158,7 @@ export class ArenaGame {
     const standoff = e.reach + STANDOFF_EXTRA;
     switch (e.state) {
       case "circle":                                      // 대기: 거리 유지하며 선회(포위)
+        if (e.engageT > 0) e.engageT -= dt;               // 다음 교전까지 대기(간헐 공격)
         if (dist > standoff + 12) { e.pos.x += dx / dist * e.speed * 0.55 * dt; e.pos.y += dy / dist * e.speed * 0.55 * dt; }
         else if (dist < standoff - 12) { e.pos.x -= dx / dist * e.speed * 0.7 * dt; e.pos.y -= dy / dist * e.speed * 0.7 * dt; }
         else { e.pos.x += (-dy / dist) * ORBIT_SPEED * e.orbitDir * dt; e.pos.y += (dx / dist) * ORBIT_SPEED * e.orbitDir * dt; }
@@ -182,7 +184,7 @@ export class ArenaGame {
       case "recover":                                     // 회복(무방비 빈틈 = 반격 창)
         e.recoverT -= dt;
         e.pos.x -= dx / dist * e.speed * 0.3 * dt; e.pos.y -= dy / dist * e.speed * 0.3 * dt; this.resolve(e.pos, e.r);
-        if (e.recoverT <= 0) e.state = "circle";
+        if (e.recoverT <= 0) { e.state = "circle"; if (e.engageInterval > 0) e.engageT = e.engageInterval + Math.random() * e.engageJitter; }
         break;
     }
   }
@@ -245,7 +247,7 @@ export class ArenaGame {
     if (best.ent.hp <= 0) { this.enemies = this.enemies.filter((e) => e !== best); sfx.down(); this.popupAt(best.pos.x, best.pos.y, "쓰러짐!", "#c9a44a"); return; }
     const low = best.ent.hp / best.ent.maxHp < 0.35;
     best.retreatT = low ? 1.1 : 0.5;
-    if (best.kind === "melee") { best.state = "circle"; best.windup = 0; best.holdT = 0; best.recoverT = 0; }
+    if (best.kind === "melee") { best.state = "circle"; best.windup = 0; best.holdT = 0; best.recoverT = 0; if (best.engageInterval > 0) best.engageT = best.engageInterval + Math.random() * best.engageJitter; }
     else best.charging = false;
     this.popupAt(best.pos.x, best.pos.y, `${r.grade} -${dmg.toFixed(0)}${low ? " · 도망!" : ""}`, "#e8dcc2");
   }

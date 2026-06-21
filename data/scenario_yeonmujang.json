@@ -1,0 +1,72 @@
+{
+  "_note": "연무장 — 첫 수련 시나리오. 기획서 §14, §10. 사용자가 처음 구결을 익히는 장소. 사범은 engageDelay(첫 교전까지 유예) 뒤 engageInterval 간격으로 간헐적으로만 공격한다.",
+  "scenario": {
+    "id": "sc_yeonmujang",
+    "title": "첫 수련",
+    "type": "prototype",
+    "synopsis": "사범 앞에서 처음으로 구결을 익힌다. 한동안 지켜보던 사범이 이윽고 간헐적으로 손을 써 온다 — 받아내고, 끝내 한 수 올려라.",
+
+    "setting": {
+      "era": "대명(大明) 만력(萬曆)",
+      "year": 23,
+      "season": "초봄",
+      "timeOfDay": "한낮",
+      "weather": "맑음"
+    },
+
+    "arena": {
+      "place": "yeonmujang",
+      "variant": null,
+      "placeOverride": null
+    },
+
+    "player": { "profile": "player_default", "start": { "x": 0, "y": -110 } },
+
+    "opponents": [
+      {
+        "id": "master", "template": "sabeom",
+        "spawn": { "x": 0, "y": 90 },
+        "behavior": { "kind": "melee", "attack": "베기", "engageDelay": 6, "engageInterval": 4.5, "engageJitter": 1.5 },
+        "_note": "사범: 6초간 지켜보다 이후 4.5초±1.5 간격으로 간헐 공격. 평소엔 거리를 두고 선회"
+      }
+    ],
+
+    "initialState": {
+      "mode": "전투",
+      "playerHp": "from-profile",
+      "elapsed": 0,
+      "_note": "최초 상태 — 입구 쪽에서 시작, 사범은 중앙. 처음 한동안은 자유 연습"
+    },
+
+    "objective": "구결로 이동·공격·방어를 익히고, 사범의 간헐적 공격에 대응한다. 사범을 제압하면 수련을 마친다.",
+    "controlsHint": "이동: 앞·뒤·좌·우·접근 · 공격: 주먹·차기 · 방어: 피·굴러 (입력 후 Enter)",
+
+    "lifecycle": {
+      "states": ["briefing", "playing", "resolution", "result"],
+      "start": "briefing",
+      "transitions": [
+        { "from": "briefing",   "on": "confirm",      "to": "playing" },
+        { "from": "playing",    "on": "endCondition", "to": "resolution" },
+        { "from": "resolution", "on": "judged",       "to": "result" },
+        { "from": "result",     "on": "retry",        "to": "briefing" },
+        { "from": "result",     "on": "quit",         "to": "exit" }
+      ]
+    },
+
+    "endConditions": [
+      { "id": "win",     "when": "적 전멸",        "title": "한 수 올림", "text": "사범이 고개를 끄덕인다. 첫 수련을 마쳤다." },
+      { "id": "lose",    "when": "playerHp <= 0",  "title": "아직 멀었다", "text": "사범의 목검에 무릎을 꿇었다. 다시." },
+      { "id": "timeout", "when": "elapsed >= 120", "title": "수련 종료",  "text": "해가 기운다. 오늘 수련은 여기까지." }
+    ],
+
+    "onResult": {
+      "win":     { "options": ["retry", "quit"] },
+      "lose":    { "options": ["retry", "quit"] },
+      "timeout": { "options": ["retry", "quit"] }
+    },
+    "actions": {
+      "retry": { "do": "reset-to", "target": "initialState" },
+      "quit":  { "do": "exit-to",  "target": "title" }
+    }
+  }
+}

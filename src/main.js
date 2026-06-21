@@ -55,8 +55,8 @@ function buildMap() {
     el.className = "node";
     el.dataset.scenario = s.id;
     el.textContent = GAME.places[s.arena.place].place.name;
-    el.style.left = (28 + i * 34) + "%";
-    el.style.top = (40 + (i % 2) * 20) + "%";
+    el.style.left = (20 + i * 24) + "%";
+    el.style.top = (38 + (i % 2) * 22) + "%";
     g.appendChild(el);
   });
 }
