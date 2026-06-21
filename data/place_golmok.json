@@ -1,0 +1,30 @@
+{
+  "_note": "골목 — 재사용 가능한 장소(Place). 기획문서 §5.5. 좌표 = 중심 원점 직교(px, +x=우, +y=앞). 좁고 긴 뒷골목이라 bounds가 세로로 길다.",
+  "place": {
+    "id": "golmok",
+    "name": "뒷골목",
+    "region": "낙양",
+    "archetype": "골목",
+    "mood": "후미진 뒷골목",
+    "description": "낙양 저잣거리 뒤편의 좁고 긴 골목. 한쪽은 큰길로, 반대쪽은 막다른 뒷문으로 이어진다. 장독과 버려진 수레가 길을 막는다."
+  },
+  "stage": {
+    "shape": "rect",
+    "bounds": { "halfWidth": 150, "halfHeight": 320, "_note": "좁고 긴 골목. x∈[-150,150], y∈[-320,320]" },
+    "size": { "approachTime": 1.4, "_note": "골목 길이를 따라 약간의 여유" },
+    "anchor": { "x": 0, "y": 0 },
+    "obstacles": [
+      { "id": "jar",   "kind": "장독", "pos": { "x": 95,  "y": 140 },  "size": 50, "blocks": { "projectile": true, "movement": true, "sight": false }, "destructible": true },
+      { "id": "cart",  "kind": "수레", "pos": { "x": -80, "y": -120 }, "size": 70, "blocks": { "projectile": true, "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "crates","kind": "널빤지더미", "pos": { "x": 90, "y": -30 }, "size": 45, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true }
+    ],
+    "terrain": [
+      { "id": "mud", "kind": "진흙", "shape": "circle", "cx": -30, "cy": 40, "r": 70, "effects": { "moveSpeed": 0.7 }, "_note": "비 갠 뒤 질척임 — 보행 둔화" }
+    ],
+    "exits": [
+      { "id": "main_road", "type": "큰길",  "pos": { "x": 0, "y": 320 },  "_note": "골목 입구 — 큰길로 이어짐" },
+      { "id": "back_door", "type": "뒷문",  "pos": { "x": 0, "y": -320 }, "_note": "막다른 뒷문" }
+    ],
+    "lighting": { "sight": 0.7, "_note": "밤 골목 — 어둑함" }
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "_note": "인물 클래스(템플릿). 기획서 §5.5 인물, §6.2 지식 vs 실력. 능력치 모델 = 자원(hp·내력) + 기본행위 숙련(별도 힘/민첩 스탯 없음 — 위력은 숙련에서 파생). 'level'이 자원·숙련 기본값을 파생: 값 = base + (level-1)*perLevel. masteryProfile.base/perLevel = 모든 전투 기본행위의 기본 숙련, .actions = 행위별 가감(특기). loadout = 보유무공(권한, {tech, 단계})(§8.3). move = 경공(이동법)·이동속도(§5.4). 장면(Scene)은 template를 참조하고 spawn·role·activeFrom·override만 지정. tier: 보스|정예|잡졸|일반인.",
+  "classes": {
+    "hyangju": {
+      "name": "오룡방 향주", "faction": "enemy", "tier": "보스",
+      "level": 6,
+      "resources": { "base": { "hp": 80, "qi": 50 }, "perLevel": { "hp": 18, "qi": 14 } },
+      "masteryProfile": { "base": 1, "perLevel": 1, "actions": { "던지기": 2, "장풍": 1 } },
+      "loadout": [ { "tech": "용호권", "단계": 3 }, { "tech": "단검투", "단계": 2 } ],
+      "weapon": "bisu",
+      "move": { "gyeonggong": "유운보", "speed": 1.2 },
+      "ai": "behaviorTree:hyangju",
+      "dialogue": "dialogue:hyangju_chwiseonru",
+      "appearance": { "sprite": "boss_hyangju", "color": "#b03030" },
+      "_note": "표적. 담판·대치 중엔 대화 행위자, 전투 격발 시 보스로 활성화"
+    },
+    "oryong_guard": {
+      "name": "오룡방 호위", "faction": "enemy", "tier": "잡졸",
+      "level": 2,
+      "resources": { "base": { "hp": 50, "qi": 30 }, "perLevel": { "hp": 20, "qi": 12 } },
+      "masteryProfile": { "base": 1, "perLevel": 1, "actions": { "베기": 1 } },
+      "loadout": [ { "tech": "용호권", "단계": 1 } ],
+      "weapon": "hodo",
+      "move": { "gyeonggong": "보법", "speed": 1.0 },
+      "ai": "stateMachine:guard",
+      "appearance": { "sprite": "guard", "color": "#8a5a2b" }
+    },
+    "janpung_byeong": {
+      "name": "장풍병", "faction": "enemy", "tier": "잡졸",
+      "level": 1,
+      "resources": { "base": { "hp": 50, "qi": 30 }, "perLevel": { "hp": 18, "qi": 12 } },
+      "masteryProfile": { "base": 1, "perLevel": 1, "actions": { "장풍": 1 } },
+      "loadout": [],
+      "weapon": "none",
+      "move": { "gyeonggong": "보법", "speed": 1.0 },
+      "ai": "stateMachine:zhanfeng",
+      "appearance": { "sprite": "mob", "color": "#6a6a6a" },
+      "_note": "즉흥 장풍 위주 잡졸. 보유무공 없음"
+    },
+    "jolbyeong": {
+      "name": "졸병", "faction": "enemy", "tier": "잡졸",
+      "level": 1,
+      "resources": { "base": { "hp": 40, "qi": 20 }, "perLevel": { "hp": 15, "qi": 8 } },
+      "masteryProfile": { "base": 1, "perLevel": 1, "actions": {} },
+      "loadout": [],
+      "weapon": "none",
+      "move": { "gyeonggong": "보법", "speed": 1.0 },
+      "ai": "stateMachine:grunt",
+      "appearance": { "sprite": "grunt", "color": "#7a5a3a" },
+      "_note": "맨손 근접 졸병 — 가장 단순한 적"
+    },
+    "guest": {
+      "name": "손님", "faction": "neutral", "tier": "일반인",
+      "level": 1,
+      "resources": { "base": { "hp": 20, "qi": 0 }, "perLevel": { "hp": 0, "qi": 0 } },
+      "masteryProfile": { "base": 0, "perLevel": 0, "actions": {} },
+      "loadout": [], "weapon": "none",
+      "move": { "gyeonggong": "보행", "speed": 0.9 },
+      "ai": "stateMachine:bystander",
+      "bystander": { "panicDefault": "도주", "penaltyOnDeath": "평판 -대" },
+      "appearance": { "sprite": "civilian", "color": "#d9c089" }
+    },
+    "drunk": {
+      "name": "취객", "faction": "neutral", "tier": "일반인",
+      "level": 1,
+      "resources": { "base": { "hp": 20, "qi": 0 }, "perLevel": { "hp": 0, "qi": 0 } },
+      "masteryProfile": { "base": 0, "perLevel": 0, "actions": {} },
+      "loadout": [], "weapon": "none",
+      "move": { "gyeonggong": "보행", "speed": 0.0 },
+      "ai": "stateMachine:bystander",
+      "bystander": { "panicDefault": "없음(만취)", "penaltyOnDeath": "평판 -대" },
+      "appearance": { "sprite": "civilian", "color": "#c08a5a" },
+      "_note": "만취해 움직이지 않음 — 동선 방해물 겸 위험요소"
+    },
+    "server": {
+      "name": "점소이", "faction": "neutral", "tier": "일반인",
+      "level": 1,
+      "resources": { "base": { "hp": 20, "qi": 0 }, "perLevel": { "hp": 0, "qi": 0 } },
+      "masteryProfile": { "base": 0, "perLevel": 0, "actions": {} },
+      "loadout": [], "weapon": "none",
+      "move": { "gyeonggong": "보행", "speed": 1.1 },
+      "ai": "stateMachine:server",
+      "bystander": { "panicDefault": "도주" },
+      "appearance": { "sprite": "server", "color": "#cfcfcf" },
+      "_note": "쟁반 들고 통로를 오감 — 동선 변수"
+    }
+  }
+}

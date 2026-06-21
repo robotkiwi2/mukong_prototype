@@ -1,0 +1,84 @@
+:root{
+  --bg:#14110d; --ink:#e8dcc2; --muted:#9b8e74; --gold:#c9a44a;
+  --red:#b03030; --green:#5a8f5a; --panel:#1f1a13; --line:#3a3026;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans KR","Malgun Gothic",sans-serif;overflow:hidden}
+#app{height:100%;display:flex;align-items:center;justify-content:center}
+
+.screen{display:none;width:100%;height:100%;flex-direction:column;
+  align-items:center;justify-content:center}
+.screen.active{display:flex}
+
+/* 타이틀 */
+#screen-title h1{font-size:88px;margin:0;color:var(--gold);letter-spacing:.1em;
+  text-shadow:0 0 24px rgba(201,164,74,.3)}
+.subtitle{color:var(--muted);margin:.3em 0 1.6em}
+.hint{color:var(--muted);font-size:12px;margin-top:2em}
+
+.menu{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+button{background:var(--panel);color:var(--ink);border:1px solid var(--line);
+  padding:10px 22px;font-size:15px;border-radius:4px;cursor:pointer;
+  font-family:inherit;transition:.15s}
+button:hover{border-color:var(--gold);color:var(--gold)}
+
+/* 맵 */
+.map-title{color:var(--gold);font-weight:400;letter-spacing:.08em}
+.map-body{display:flex;gap:30px;align-items:stretch;width:780px;max-width:92vw}
+.map-graph{position:relative;flex:1;height:340px;background:var(--panel);
+  border:1px solid var(--line);border-radius:6px}
+.node{position:absolute;transform:translate(-50%,-50%);padding:6px 12px;
+  border-radius:4px;font-size:14px;border:1px solid var(--line);background:#241e16}
+.node.current{border-color:var(--gold);color:var(--gold);box-shadow:0 0 14px rgba(201,164,74,.35)}
+.node.faded{opacity:.4}
+.map-info{width:240px;background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:18px}
+.map-info h3{margin:.2em 0;color:var(--gold);font-weight:500}
+
+/* 아레나 */
+#screen-arena{justify-content:flex-start;gap:0}
+.hud-top{width:972px;max-width:98vw;display:flex;justify-content:space-between;
+  padding:10px 6px 2px;font-size:14px}
+.ht-left{color:var(--gold)} .ht-mid{color:var(--muted)} .ht-right{font-variant-numeric:tabular-nums}
+.hud-setting{width:972px;max-width:98vw;text-align:right;color:var(--muted);
+  font-size:11px;padding:0 6px 4px}
+.arena-row{display:flex;gap:12px;width:972px;max-width:98vw;align-items:flex-start}
+#arena{background:#0d0b08;border:1px solid var(--line);border-radius:6px;display:block}
+
+/* 우측 명령 패널 (항상 표시, 세로 스크롤) */
+.cmd-panel{width:200px;max-height:520px;overflow-y:auto;background:var(--panel);
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:12px}
+.cmd-panel h4{margin:8px 0 4px;color:var(--gold);font-weight:500;font-size:12px;
+  border-bottom:1px solid var(--line);padding-bottom:3px}
+.cmd-panel h4:first-child{margin-top:0}
+.cmd{margin:6px 0}
+.cmd b{color:var(--ink);background:#2a2218;padding:1px 7px;border-radius:3px}
+.cmd .cn{color:var(--muted);margin-left:5px}
+.cmd .cd{color:var(--muted);font-size:11px;margin-top:2px;line-height:1.35}
+
+.hud-bot{width:972px;max-width:98vw;display:flex;align-items:center;gap:18px;
+  padding:8px 6px;font-size:13px}
+.bars{display:flex;flex-direction:column;gap:5px;min-width:230px}
+.bar{display:flex;align-items:center;gap:8px}
+.bar label{width:30px;color:var(--muted)}
+.track{width:150px;height:10px;background:#241e16;border-radius:5px;overflow:hidden}
+.fill{height:100%;transition:width .15s}
+.fill.hp{background:var(--red)} .fill.qi{background:#3f6fb0}
+.cheat{flex:1;color:var(--muted)} .cheat b{color:var(--ink)}
+.esc-btn{padding:5px 12px;font-size:12px}
+
+#hidden-input{position:absolute;opacity:0;pointer-events:none;left:-9999px}
+
+/* 오버레이 */
+.overlay{position:fixed;inset:0;background:rgba(10,8,6,.82);display:flex;
+  align-items:center;justify-content:center;z-index:10;
+  opacity:0;visibility:hidden;pointer-events:none;transition:opacity .35s ease, visibility .35s}
+.overlay.show{opacity:1;visibility:visible;pointer-events:auto}
+.panel{transition:transform .35s ease;transform:translateY(8px)}
+.overlay.show .panel{transform:translateY(0)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:30px 36px;max-width:460px;text-align:center}
+.panel h2{margin:.1em 0 .5em;color:var(--gold);font-weight:500}
+.muted{color:var(--muted)} .small{font-size:12px}
+#result-title.win{color:var(--green)} #result-title.lose{color:var(--red)}

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>무공 — 타이핑 액션 프로토타입</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- 타이틀 -->
+    <section id="screen-title" class="screen active">
+      <h1>武功</h1>
+      <p class="subtitle">구결을 외워 무공을 펼치는 자</p>
+      <div class="menu">
+        <button data-action="to-map">시작</button>
+        <button data-action="open-settings">설정</button>
+      </div>
+      <p class="hint">방어 드릴 프로토타입 · 한글 입력 판정 검증</p>
+    </section>
+
+    <!-- 맵 모드 (추상 레이어) -->
+    <section id="screen-map" class="screen">
+      <h2 class="map-title">강호 · 낙양</h2>
+      <div class="map-body">
+        <div class="map-graph" id="map-graph"></div>
+        <aside class="map-info">
+          <h3 id="map-name">—</h3>
+          <p id="map-syn" class="muted small"></p>
+          <p id="map-setting" class="muted small"></p>
+          <div class="menu">
+            <button data-action="enter-arena">진입</button>
+            <button data-action="to-title">돌아가기</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 아레나 모드 (체화 레이어) -->
+    <section id="screen-arena" class="screen">
+      <!-- 상단 바 -->
+      <div class="hud-top">
+        <div class="ht-left"><span id="ht-place">취선루 2층</span> · <span id="ht-mode">전투</span></div>
+        <div class="ht-mid" id="ht-objective">목표</div>
+        <div class="ht-right"><span id="ht-blocked"></span> &nbsp; ⏱ <span id="ht-timer">0.0</span></div>
+      </div>
+      <div class="hud-setting" id="ht-setting"></div>
+
+      <div class="arena-row">
+        <canvas id="arena" width="760" height="520"></canvas>
+        <aside class="cmd-panel" id="cmd-panel"></aside>
+      </div>
+
+      <!-- 하단 바 -->
+      <div class="hud-bot">
+        <div class="bars">
+          <div class="bar"><label>HP</label><div class="track"><div id="bar-hp" class="fill hp"></div></div><span id="val-hp"></span></div>
+          <div class="bar"><label>내력</label><div class="track"><div id="bar-qi" class="fill qi"></div></div><span id="val-qi"></span></div>
+        </div>
+        <div class="cheat muted">입력 후 Enter로 시전 · 우측 목록 참고</div>
+        <button class="esc-btn" data-action="pause">⏸ ESC</button>
+      </div>
+
+      <!-- IME 캡처용 숨은 입력 -->
+      <input id="hidden-input" autocomplete="off" autocapitalize="off" spellcheck="false" />
+
+      <!-- 오버레이들 -->
+      <div id="overlay-briefing" class="overlay">
+        <div class="panel">
+          <h2 id="brief-title">브리핑</h2>
+          <p id="brief-synopsis" class="muted"></p>
+          <p id="brief-objective"></p>
+          <p id="brief-controls" class="small muted"></p>
+          <button data-action="begin">시작 (Enter)</button>
+        </div>
+      </div>
+
+      <div id="overlay-result" class="overlay">
+        <div class="panel">
+          <h2 id="result-title"></h2>
+          <p id="result-text" class="muted"></p>
+          <p id="result-stat" class="small"></p>
+          <div class="menu">
+            <button data-action="retry">재시작</button>
+            <button data-action="quit">그만두기</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="overlay-pause" class="overlay">
+        <div class="panel">
+          <h2>일시정지</h2>
+          <div class="menu">
+            <button data-action="resume">재개</button>
+            <button data-action="quit">그만두기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 부팅 가드 (classic 스크립트 — 모듈이 안 떠도 실행됨) -->
+  <script>
+  (function () {
+    function showErr(msg) {
+      var d = document.getElementById("boot-err") || document.createElement("div");
+      d.id = "boot-err";
+      d.style.cssText = "position:fixed;left:0;right:0;bottom:0;background:#3a1414;color:#f0c0c0;font:12px monospace;padding:10px;white-space:pre-wrap;z-index:99";
+      d.textContent = "[오류] " + msg;
+      document.body.appendChild(d);
+    }
+    if (location.protocol === "file:") {
+      document.body.innerHTML =
+        '<div style="padding:48px;font-family:sans-serif"><h2 style="color:#c9a44a">로컬 서버로 열어주세요</h2>' +
+        "<p>브라우저는 <code>file://</code>에서 자바스크립트 모듈을 차단합니다 — 그래서 버튼이 동작하지 않습니다.</p>" +
+        "<p>폴더에서 <code>python -m http.server</code> 실행 후 <b>http://localhost:8000</b> 으로 여세요.</p></div>";
+      return;
+    }
+    window.addEventListener("error", function (e) { showErr((e.error && e.error.stack) || e.message); });
+    window.addEventListener("unhandledrejection", function (e) { showErr("Promise: " + ((e.reason && e.reason.message) || e.reason)); });
+    setTimeout(function () { if (!window.__mainLoaded) showErr("main.js가 실행되지 않았습니다. 콘솔(F12)을 확인하세요."); }, 1500);
+  })();
+  </script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

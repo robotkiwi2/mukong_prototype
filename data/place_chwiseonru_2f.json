@@ -1,0 +1,54 @@
+{
+  "_note": "취선루 2층 — 재사용 가능한 장소(Place). 기획문서 §5.5. 좌표 = 아레나 중심 원점 직교좌표(px). +x=우(동), +y=앞(정면). 캔버스 렌더 시 y 반전. 위협의 각도·거리는 저장하지 않고 런타임에 플레이어 현재 위치 기준으로 파생한다. blocks 값: false(없음) | \"low\"/\"partial\"(부분) | true(완전).",
+  "place": {
+    "id": "chwiseonru_2f",
+    "name": "취선루 2층",
+    "region": "낙양",
+    "archetype": "주루",
+    "mood": "잠입·난전",
+    "description": "낙양 제일 주루 취선루의 이층. 탁자가 빼곡하고 손님이 북적여 운신이 좁다. 정면 안쪽이 상석, 좌우로 기둥, 등 뒤로 계단, 한쪽 벽에 창."
+  },
+  "stage": {
+    "shape": "rect",
+    "bounds": { "halfWidth": 360, "halfHeight": 240, "_note": "중심 원점. x∈[-360,360], y∈[-240,240] (px)" },
+    "size": {
+      "approachTime": 1.2,
+      "_note": "외곽→중심 비행 시간(초) = 최대 경고 시간. 좁아 코앞 난전 → 단축어 전용 전투. 파생 장풍 속도 ≈ 300px/s"
+    },
+    "anchor": { "x": 0, "y": 0, "_note": "플레이어 시작·앵커 = 중심 원점" },
+    "obstacles": [
+      { "id": "table_center", "kind": "탁자", "pos": { "x": 0,    "y": 220 },  "size": 70, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true },
+      { "id": "table_ne",     "kind": "탁자", "pos": { "x": 115,  "y": 96 },   "size": 60, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true },
+      { "id": "table_se",     "kind": "탁자", "pos": { "x": 123,  "y": -103 }, "size": 60, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true },
+      { "id": "table_sw",     "kind": "탁자", "pos": { "x": -115, "y": -96 },  "size": 60, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true },
+      { "id": "table_nw",     "kind": "탁자", "pos": { "x": -130, "y": 109 },  "size": 60, "blocks": { "projectile": "low", "movement": true, "sight": false }, "destructible": true },
+      { "id": "pillar_r",     "kind": "기둥", "pos": { "x": 200,  "y": 0 },    "size": 50, "blocks": { "projectile": true,  "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "pillar_l",     "kind": "기둥", "pos": { "x": -200, "y": 0 },    "size": 50, "blocks": { "projectile": true,  "movement": true, "sight": "partial" }, "destructible": false },
+      { "id": "jar_shelf",    "kind": "술선반", "pos": { "x": 0,  "y": -250 }, "size": 55, "blocks": { "projectile": true,  "movement": true, "sight": false }, "destructible": true }
+    ],
+    "terrain": [
+      { "id": "cramped",      "kind": "협소",        "shape": "all", "effects": { "aoeRange": 0.4, "moveSpeed": 0.85 }, "_note": "좁은 실내 전역 — 광역기 사실상 봉인, 보행 둔화" },
+      { "id": "spilled_wine", "kind": "엎질러진 술", "shape": "circle", "cx": 115, "cy": 96, "r": 70, "effects": { "moveControl": 0.5 }, "_note": "table_ne 주변 미끄러움 — 경공 제어 저하" }
+    ],
+    "exits": [
+      { "id": "stair",  "type": "계단", "pos": { "x": 0,   "y": -340 }, "_note": "등 뒤. 증원 유입로이자 퇴로" },
+      { "id": "window", "type": "창문", "pos": { "x": 340, "y": 0 },    "_note": "측면. 잠입/도주용 이탈로" }
+    ],
+    "lighting": { "sight": 1.0, "_note": "등불 — 시야 정상" }
+  },
+  "variants": {
+    "_note": "장소 상태 변형. base(stage) = 성업 상태가 기본. 각 variant는 id 기준 패치: 객체 필드(size·lighting 등)는 deep-merge, obstacles/terrain은 remove/modify/add 연산. 손님 유무는 여기가 아니라 Scene의 actors 소관(§5.5).",
+    "폐허": {
+      "description": "불타 무너진 취선루 이층. 탁자는 숯덩이가 되고, 한쪽 벽이 통째로 무너져 달빛이 든다.",
+      "mood": "황폐·적막",
+      "lighting": { "sight": 0.6 },
+      "size": { "approachTime": 1.6, "_note": "벽 붕괴로 공간이 넓어져 경고 시간↑" },
+      "obstacles": {
+        "remove": ["table_ne", "table_se", "jar_shelf"],
+        "modify": { "pillar_l": { "kind": "무너진 기둥", "blocks": { "projectile": false, "movement": true, "sight": false } } },
+        "add": [ { "id": "rubble_1", "kind": "잔해", "pos": { "x": -160, "y": 0 }, "size": 90, "blocks": { "projectile": true, "movement": true, "sight": false }, "destructible": false } ]
+      },
+      "terrain": { "remove": ["cramped"], "_note": "협소 해제 → 광역기 봉인 풀림" }
+    }
+  }
+}

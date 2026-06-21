@@ -1,0 +1,18 @@
+{
+  "_note": "병기 라이브러리. 특정 기본행위(basic_actions)를 곱(multiplier)으로 보정한다. tags = 무공 요구조건 매칭용(예: 단검투는 '투척' 태그 병기 필요). mods[행위][속성] = 보정 배수.",
+  "weapons": {
+    "gwanjol_spear": {
+      "name": "관졸용 장창", "type": "창", "tags": ["장병기"],
+      "mods": { "찌르기": { "range": 1.5, "power": 1.2, "time": 0.9 }, "베기": { "power": 0.8 } }
+    },
+    "hodo": {
+      "name": "호위도", "type": "도", "tags": ["단병기"],
+      "mods": { "베기": { "power": 1.3, "range": 1.1 }, "찌르기": { "power": 0.9 } }
+    },
+    "bisu": {
+      "name": "비수", "type": "단검", "tags": ["단병기", "투척"],
+      "mods": { "찌르기": { "range": 0.6, "power": 0.8, "time": 1.3 }, "던지기": { "power": 1.4, "range": 1.2 } }
+    },
+    "none": { "name": "맨손", "type": "무기없음", "tags": [], "mods": {} }
+  }
+}

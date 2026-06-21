@@ -1,0 +1,73 @@
+{
+  "_note": "뒷골목 — 졸병 1명과의 가장 단순한 싸움. 기획서 §14. place 'golmok' 위에 얹는 시나리오. 이동·근접 공격 검증용 최소 전투.",
+  "scenario": {
+    "id": "sc_golmok",
+    "title": "뒷골목의 시비",
+    "type": "prototype",
+    "synopsis": "후미진 골목에서 시비가 붙었다. 졸병 하나를 정리하고 빠져나가라.",
+
+    "setting": {
+      "era": "대명(大明) 만력(萬曆)",
+      "year": 23,
+      "season": "늦가을",
+      "timeOfDay": "밤",
+      "weather": "비 갠 뒤"
+    },
+
+    "arena": {
+      "place": "golmok",
+      "variant": null,
+      "placeOverride": null,
+      "_note": "골목 base 상태 그대로 (이미 밤·어둑함)"
+    },
+
+    "player": { "profile": "player_default", "start": { "x": 0, "y": -200 } },
+
+    "opponents": [
+      {
+        "id": "grunt", "template": "jolbyeong",
+        "spawn": { "x": 0, "y": 180 },
+        "behavior": { "kind": "melee", "attack": "발차기" },
+        "_note": "골목 저편에서 다가오는 졸병 하나"
+      }
+    ],
+
+    "initialState": {
+      "mode": "전투",
+      "playerHp": "from-profile",
+      "elapsed": 0,
+      "_note": "최초 상태 — 골목 뒷문 쪽에서 시작, 졸병은 큰길 쪽"
+    },
+
+    "objective": "이동(↑↓←→)하며 골목의 졸병을 주먹·차기로 제압한다.",
+    "controlsHint": "이동: 화살표 키 · 공격: 구결 입력 후 Enter (주먹·차기) · 방어: 피·굴러",
+
+    "lifecycle": {
+      "states": ["briefing", "playing", "resolution", "result"],
+      "start": "briefing",
+      "transitions": [
+        { "from": "briefing",   "on": "confirm",      "to": "playing" },
+        { "from": "playing",    "on": "endCondition", "to": "resolution" },
+        { "from": "resolution", "on": "judged",       "to": "result" },
+        { "from": "result",     "on": "retry",        "to": "briefing" },
+        { "from": "result",     "on": "quit",         "to": "exit" }
+      ]
+    },
+
+    "endConditions": [
+      { "id": "win",     "when": "적 전멸",       "title": "정리",   "text": "졸병이 나가떨어졌다. 골목을 빠져나간다." },
+      { "id": "lose",    "when": "playerHp <= 0", "title": "패배",   "text": "허무하게 당했다." },
+      { "id": "timeout", "when": "elapsed >= 60", "title": "무승부", "text": "인기척에 졸병이 달아났다." }
+    ],
+
+    "onResult": {
+      "win":     { "options": ["retry", "quit"] },
+      "lose":    { "options": ["retry", "quit"] },
+      "timeout": { "options": ["retry", "quit"] }
+    },
+    "actions": {
+      "retry": { "do": "reset-to", "target": "initialState" },
+      "quit":  { "do": "exit-to",  "target": "title" }
+    }
+  }
+}

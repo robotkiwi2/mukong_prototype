@@ -1,0 +1,52 @@
+{
+  "_note": "취선루 2층 '잠입' 장면(Scene). 기획문서 §5.5–5.6. place 위에 얹히는 시나리오. 인물은 actors.json 템플릿을 'template'로 참조하고, 여기서는 배치(spawn)·역할(role)·활성 시점(activeFrom)·개별 덮어쓰기(override)만 지정. mode는 담판→대치→전투로 흐른다. 좌표 = 아레나 중심 원점 직교좌표(px, +x=우, +y=앞).",
+  "scene": {
+    "id": "chwiseonru_2f_infiltration",
+    "place": "chwiseonru_2f",
+    "title": "취선루의 밀담",
+    "mode": "담판",
+    "synopsis": "정보를 캐러 표적의 자리에 합석한다. 의심을 사면 대치로, 정체가 들통나면 전투로 미끄러진다.",
+    "playerStart": { "x": 0, "y": 60, "_note": "표적 맞은편, 중심 부근" },
+    "objective": {
+      "primary": "표적에게서 정보 입수 후 이탈(또는 제압)",
+      "secondary": "손님 휘말림 최소화"
+    },
+    "transitions": [
+      { "from": "담판", "to": "대치", "trigger": "의심 임계 초과 / 도발" },
+      { "from": "대치", "to": "담판", "trigger": "설득 성공" },
+      { "from": "대치", "to": "전투", "trigger": "정체 발각 또는 첫 공격 구결 시전" },
+      { "from": "전투", "to": "종료", "trigger": "표적 제압 또는 창문·계단으로 이탈" }
+    ],
+    "actors": [
+      { "id": "target",  "template": "hyangju",      "role": "boss",      "activeFrom": "전투", "spawn": { "x": 0,    "y": 280 },
+        "_note": "담판·대치 중엔 대화 행위자, 전투 격발 시 보스로 활성화" },
+      { "id": "guard_a", "template": "oryong_guard", "role": "guard",     "activeFrom": "대치", "spawn": { "x": 86,   "y": 235 },
+        "override": { "name": "호위 갑 (역전의 노졸)", "level": 3, "loadout": [ { "tech": "용호권", "단계": 2 } ], "weapon": "gwanjol_spear" },
+        "_note": "클래스(oryong_guard)에서 생성된 인스턴스를 override로 특화 — '구체화된 잡졸'" },
+      { "id": "guard_b", "template": "oryong_guard", "role": "guard",     "activeFrom": "대치", "spawn": { "x": -86,  "y": 235 } },
+      { "id": "guest_1", "template": "guest",        "role": "bystander", "spawn": { "x": 173,  "y": 100 } },
+      { "id": "guest_2", "template": "guest",        "role": "bystander", "spawn": { "x": 169,  "y": -141 } },
+      { "id": "guest_3", "template": "guest",        "role": "bystander", "spawn": { "x": -161, "y": -135 },
+        "override": { "bystander": { "panicDefault": "엎드림" } } },
+      { "id": "drunk_1", "template": "drunk",        "role": "bystander", "spawn": { "x": -199, "y": 115 } },
+      { "id": "server_1","template": "server",       "role": "server",    "spawn": { "x": -51,  "y": -141 } }
+    ],
+    "waves": [
+      {
+        "id": "reinforce_noise",
+        "trigger": "소란(광역기·파괴·큰 소리)",
+        "spawn": { "template": "janpung_byeong", "count": 2 },
+        "from": { "x": 0, "y": -340 },
+        "_note": "계단(등 뒤)으로 증원 — 큰 소리를 내면 즉시. 잠입 실패의 대가"
+      },
+      {
+        "id": "reinforce_time",
+        "trigger": "전투 진입 후 8초",
+        "spawn": { "template": "janpung_byeong", "count": 1 },
+        "from": { "x": 0, "y": -340 }
+      }
+    ],
+    "success": ["표적 제압", "정보 입수 후 이탈"],
+    "fail": ["플레이어 패배", "표적 도주", "손님 다수 사망"]
+  }
+}

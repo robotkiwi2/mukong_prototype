@@ -1,0 +1,36 @@
+{
+  "_note": "무공(초식) 라이브러리. 기획서 §7.2. 초식 = 기본행위의 명명된 시퀀스(함수/매크로). 'seq'는 basic_actions id 배열. 인물은 무공을 '단계(level)'만큼 익혀 보유한다(§8.3 권한, §8.4 단축). levels[n]: 그 단계의 입력 어구·위력배수(powerMul)·내력배수(qiMul). minInputLen = 위력 비례 최소 입력 길이(§9). category: 공격|방어|광역|이동.",
+  "techniques": {
+    "용호권": {
+      "name": "용호권(龍虎拳)", "category": "공격", "tier": "중",
+      "seq": ["발차기", "찌르기", "발차기", "베기"],
+      "minInputLen": 3,
+      "levels": {
+        "1": { "input": "용호권", "powerMul": 1.0, "qiMul": 1.0 },
+        "2": { "input": "용호",   "powerMul": 1.15, "qiMul": 0.95 },
+        "3": { "input": "ㅇㅎ",   "powerMul": 1.3,  "qiMul": 0.90 }
+      },
+      "_note": "근접 권각 연계. 단계가 오를수록 입력이 짧아지고 위력↑ (천장이 오름, §8.4)"
+    },
+    "단검투": {
+      "name": "단검투(短劍投)", "category": "공격", "tier": "하",
+      "seq": ["던지기", "던지기"],
+      "minInputLen": 2,
+      "requiresWeaponTag": "투척",
+      "levels": {
+        "1": { "input": "단검투", "powerMul": 1.0, "qiMul": 1.0 },
+        "2": { "input": "단검",   "powerMul": 1.2, "qiMul": 0.90 }
+      },
+      "_note": "연속 비수 투척. 투척 가능 병기 필요"
+    },
+    "금강불괴": {
+      "name": "금강불괴(金剛不壞)", "category": "방어", "subtype": "광역-버티기",
+      "seq": ["숙이기"],
+      "minInputLen": 4,
+      "levels": {
+        "1": { "input": "금강불괴", "powerMul": 1.0, "qiMul": 1.0, "castTime": 1.4, "effect": "주변 공격 무효화 1.2s" }
+      },
+      "_note": "§4.3 버티기형 광역기. 길어 선제 시전 필요. 좁은 취선루에선 aoeRange 보정으로 약화"
+    }
+  }
+}

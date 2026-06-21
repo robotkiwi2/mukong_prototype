@@ -1,0 +1,22 @@
+{
+  "_note": "기본행위 라이브러리. 기획서 §7.1. 사거리·위력·속도는 수행자의 '그 행위 숙련'에 따라 스케일(§6.2). base=숙련0 기준값, masteryScale=레벨당 증가율. input=입력 토큰, desc=우측 패널 설명. category 이동의 move={toward:enemy|exit|away, dist}는 상황 기반 이동을 정의. 단위: range/projectileSpeed=px, time/iframe=초, qi=내력, power=피해.",
+  "basicActions": {
+    "접근":   { "name": "접근",   "category": "이동", "input": "접근",   "desc": "가장 가까운 적에게 다가선다",   "move": { "toward": "enemy", "dist": 130 }, "base": { "time": 0.40, "qi": 0 } },
+    "앞으로": { "name": "앞으로", "category": "이동", "input": "앞", "desc": "앞쪽으로 일정 거리 나아간다",     "move": { "dir": "앞", "dist": 100 }, "base": { "time": 0.35, "qi": 0 } },
+    "뒤로":   { "name": "뒤로",   "category": "이동", "input": "뒤", "desc": "뒤쪽으로 일정 거리 물러난다",     "move": { "dir": "뒤", "dist": 100 }, "base": { "time": 0.35, "qi": 0 } },
+    "좌로":   { "name": "좌로",   "category": "이동", "input": "좌", "desc": "왼쪽으로 일정 거리 움직인다",     "move": { "dir": "좌", "dist": 100 }, "base": { "time": 0.35, "qi": 0 } },
+    "우로":   { "name": "우로",   "category": "이동", "input": "우", "desc": "오른쪽으로 일정 거리 움직인다",   "move": { "dir": "우", "dist": 100 }, "base": { "time": 0.35, "qi": 0 } },
+
+    "회피":   { "name": "회피",   "category": "방어", "input": "피",   "desc": "옆으로 비켜 장풍을 피한다",      "move": { "toward": "away", "dist": 70 },  "base": { "time": 0.30, "qi": 5, "iframe": 0.20 }, "masteryScale": { "time": -0.04, "iframe": 0.05 } },
+    "구르기": { "name": "구르기", "category": "방어", "input": "굴러", "desc": "굴러서 크게 피한다 (무적)",       "move": { "toward": "away", "dist": 120 }, "base": { "range": 100, "time": 0.50, "qi": 8, "iframe": 0.30 }, "masteryScale": { "iframe": 0.04 } },
+    "숙이기": { "name": "숙이기", "category": "방어", "input": "숙여", "desc": "상단 공격을 숙여 피한다",         "base": { "time": 0.20, "qi": 2 }, "masteryScale": { "time": -0.03 } },
+
+    "지르기": { "name": "지르기", "category": "공격", "input": "주먹", "desc": "근접한 적을 지른다",            "base": { "range": 55, "power": 11, "time": 0.30, "qi": 3 }, "masteryScale": { "power": 0.08, "range": 0.03, "time": -0.03 } },
+    "발차기": { "name": "발차기", "category": "공격", "input": "차기", "desc": "근접한 적을 찬다 (사거리 넓음)",  "base": { "range": 60, "power": 12, "time": 0.40, "qi": 4 }, "masteryScale": { "power": 0.08, "range": 0.04, "time": -0.03 } },
+    "찌르기": { "name": "찌르기", "category": "공격", "input": "찔러", "desc": "병기로 찌른다 (사거리 김)",       "base": { "range": 70, "power": 14, "time": 0.35, "qi": 5 }, "masteryScale": { "power": 0.08, "range": 0.05, "time": -0.03 } },
+    "베기":   { "name": "베기",   "category": "공격", "input": "베",   "desc": "병기로 벤다",                  "base": { "range": 80, "power": 16, "time": 0.45, "qi": 6 }, "masteryScale": { "power": 0.08, "range": 0.04, "time": -0.03 } },
+
+    "던지기": { "name": "던지기", "category": "공격", "input": "던져", "desc": "암기를 던진다 (원거리)",         "base": { "range": 350, "power": 10, "time": 0.40, "qi": 6, "projectileSpeed": 420 }, "masteryScale": { "power": 0.07, "range": 0.05 } },
+    "장풍":   { "name": "장풍",   "category": "공격", "input": "장",   "desc": "장풍을 쏜다 (원거리, 내력 큼)",   "base": { "range": 400, "power": 18, "time": 0.60, "qi": 12, "projectileSpeed": 300 }, "masteryScale": { "power": 0.09, "range": 0.05, "projectileSpeed": 0.04 } }
+  }
+}

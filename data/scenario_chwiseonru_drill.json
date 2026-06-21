@@ -1,0 +1,85 @@
+{
+  "_note": "프로토타입 시나리오(껍데기). 기획서 §14 + §10 캠페인 계층의 가장 얇은 형태. 한 장소에서 움직이는 적들과의 난전 — 이동(화살표)·근접 공격(주먹/차기)·장풍 방어를 검증. lifecycle FSM: briefing→playing→resolution→result.",
+  "scenario": {
+    "id": "sc_chwiseonru_drill",
+    "title": "취선루 — 난전 드릴 (프로토타입)",
+    "type": "prototype",
+    "synopsis": "정체가 들통났다. 이동하며 근접한 적을 주먹·차기로 제압하고, 날아오는 장풍은 방어 구결로 막아라.",
+
+    "setting": {
+      "era": "대명(大明) 만력(萬曆)",
+      "year": 23,
+      "season": "늦가을",
+      "timeOfDay": "밤",
+      "weather": "비 갠 뒤",
+      "_note": "시나리오 시간 정보. 시각·계절은 분위기와 장소 상태(placeOverride)에 반영 — '밤'이라 시야↓"
+    },
+
+    "arena": {
+      "place": "chwiseonru_2f",
+      "variant": null,
+      "placeOverride": { "lighting": { "sight": 0.7 } },
+      "_note": "variant null = base(성업). 밤이라 시야 0.7로 덮어씀"
+    },
+
+    "player": { "profile": "player_default", "start": { "x": 0, "y": 0 } },
+
+    "opponents": [
+      {
+        "id": "janpung", "template": "janpung_byeong",
+        "spawn": { "x": 0, "y": 200 },
+        "behavior": { "kind": "ranged", "fire": "장풍", "intervalSec": 2.8, "jitterSec": 0.6, "keepDist": 240 },
+        "_note": "거리를 유지하며 장풍을 쏘는 원거리 잡졸 — '피'로 방어"
+      },
+      {
+        "id": "guard_1", "template": "oryong_guard",
+        "spawn": { "x": 200, "y": -80 },
+        "behavior": { "kind": "melee", "attack": "발차기" },
+        "_note": "접근해 발차기로 때리는 근접 잡졸 — 이동으로 거리 벌리고 주먹/차기로 제압"
+      },
+      {
+        "id": "guard_2", "template": "oryong_guard",
+        "spawn": { "x": -200, "y": -60 },
+        "behavior": { "kind": "melee", "attack": "발차기" }
+      }
+    ],
+
+    "initialState": {
+      "mode": "전투",
+      "playerHp": "from-profile",
+      "elapsed": 0,
+      "_note": "최초 상태 — 곧장 전투 모드. 플레이어는 중앙에서 시작"
+    },
+
+    "objective": "이동(↑↓←→)하며 근접한 적을 제압하고, 장풍은 방어 구결로 막는다.",
+    "controlsHint": "이동: 화살표 키 · 공격/방어: 구결 입력 후 Enter (주먹·차기 / 피·굴러)",
+
+    "lifecycle": {
+      "states": ["briefing", "playing", "resolution", "result"],
+      "start": "briefing",
+      "transitions": [
+        { "from": "briefing",   "on": "confirm",      "to": "playing" },
+        { "from": "playing",    "on": "endCondition", "to": "resolution" },
+        { "from": "resolution", "on": "judged",       "to": "result" },
+        { "from": "result",     "on": "retry",        "to": "briefing" },
+        { "from": "result",     "on": "quit",         "to": "exit" }
+      ]
+    },
+
+    "endConditions": [
+      { "id": "win",     "when": "적 전멸",        "title": "제압",   "text": "마지막 하나까지 쓰러뜨렸다. 다시 어둠 속으로." },
+      { "id": "lose",    "when": "playerHp <= 0",  "title": "패배",   "text": "중과부적. 끝내 무릎을 꿇었다." },
+      { "id": "timeout", "when": "elapsed >= 90",  "title": "무승부", "text": "소란이 커지자 양측 모두 물러섰다." }
+    ],
+
+    "onResult": {
+      "win":     { "options": ["retry", "quit"] },
+      "lose":    { "options": ["retry", "quit"] },
+      "timeout": { "options": ["retry", "quit"] }
+    },
+    "actions": {
+      "retry": { "do": "reset-to", "target": "initialState" },
+      "quit":  { "do": "exit-to",  "target": "title" }
+    }
+  }
+}

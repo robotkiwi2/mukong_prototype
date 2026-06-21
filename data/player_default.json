@@ -1,0 +1,13 @@
+{
+  "_note": "프로토타입 플레이어 시작 정의. actors.json 클래스와 '동일한' 엔티티 스키마(§6.2 자원+숙련) — NPC와 PC를 한 모델로 통일. 플레이어는 학습한 무공만 안전 시전(§8.3, 미습득 시 주화입마). 기본행위(회피·구르기·숙이기)는 숙련으로 보유하므로 즉흥 입력 가능.",
+  "player": {
+    "name": "무명(無名)",
+    "faction": "player",
+    "level": 3,
+    "resources": { "base": { "hp": 60, "qi": 40 }, "perLevel": { "hp": 20, "qi": 14 } },
+    "masteryProfile": { "base": 2, "perLevel": 1, "actions": { "회피": 1, "구르기": 1, "숙이기": 1 } },
+    "loadout": [ { "tech": "금강불괴", "단계": 1 } ],
+    "weapon": "hodo",
+    "move": { "gyeonggong": "보법", "speed": 1.0 }
+  }
+}
